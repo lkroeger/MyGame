@@ -52,6 +52,10 @@ public class StartActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartActivity.this, GameActivity.class);
                 intent.putExtra("numBullets", 10);
                 intent.putExtra("enemySpeed", 250);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("In App")
+                        .setAction("Selected Easy")
+                        .build());
                 startActivity(intent);
             }
         });
@@ -62,6 +66,10 @@ public class StartActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartActivity.this, GameActivity.class);
                 intent.putExtra("numBullets", 5);
                 intent.putExtra("enemySpeed", 350);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("In App")
+                        .setAction("Selected Medium")
+                        .build());
                 startActivity(intent);
             }
         });
@@ -72,6 +80,10 @@ public class StartActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartActivity.this, GameActivity.class);
                 intent.putExtra("numBullets", 3);
                 intent.putExtra("enemySpeed", 450);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("In App")
+                        .setAction("Selected Hard")
+                        .build());
                 startActivity(intent);
             }
         });
