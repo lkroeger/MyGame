@@ -1,15 +1,11 @@
 package com.lindsaykroeger.mygame;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.MotionEvent;
-import android.view.View;
 
-import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -19,7 +15,6 @@ import java.util.Random;
 public class Ship extends GameObject {
 
     protected Bitmap bitmap;
-
     protected Vector2D offset;
     protected Paint paint;
     protected Vector2D forward;
@@ -28,22 +23,20 @@ public class Ship extends GameObject {
     public int height;
 
 
-    public Ship(Context context, String bitmapName, float x, float y) {
+    public Ship(Context context, String bitmapName, float x, float y, int screenWidth, int screenHeight) {
         forward = new Vector2D(new Random().nextFloat(), new Random().nextFloat()).normalize();
         Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ship_transparent);
-        bitmap = Bitmap.createScaledBitmap(bmp, 500, 500, false);
+        bitmap = Bitmap.createScaledBitmap(bmp, screenWidth/3, screenWidth/3, false);
         width = bitmap.getWidth();
         height = bitmap.getHeight();
-        position = new Vector2D(x, y);
+        position = new Vector2D(x, screenHeight - height);
         offset = new Vector2D(1, 1);
 
     }
 
     @Override
     public void onUpdate() {
-//        float speed = 25.0f; //pixels per second
-//        position.y -= speed * GameView.DELTA_TIME;
-
+        //do nothing --> will move upon user motion event Action_Move
     }
     @Override
     public void onDraw(Canvas canvas) {

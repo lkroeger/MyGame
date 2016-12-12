@@ -1,11 +1,6 @@
 package com.lindsaykroeger.mygame;
 
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,8 +54,8 @@ public class GameView extends SurfaceView implements Runnable, View.OnTouchListe
         setScreenWidth(width);
         setScreenHeight(height);
         int x = SCREEN_WIDTH/3;
-        int y = SCREEN_HEIGHT - 750;
-        ship = new Ship(context, "ship", x, y);
+        int y = SCREEN_HEIGHT - SCREEN_HEIGHT/3;
+        ship = new Ship(context, "ship", x, y, ((GameActivity)context).width, ((GameActivity)context).height);
         gameObjects.add(ship);
         starField = new StarField(500, 100, 255, 100, 0);
         gameObjects.add(starField);
@@ -99,7 +93,7 @@ public class GameView extends SurfaceView implements Runnable, View.OnTouchListe
 
         if(playing = true){
             if(count == 100){
-                enemy = new BeeEnemy(context, "beeEnemy", random.nextInt(SCREEN_WIDTH - 100), 0, random.nextInt(300) + ((GameActivity)context).enemySpeed);
+                enemy = new BeeEnemy(context, "beeEnemy", random.nextInt(SCREEN_WIDTH - 100), 0, random.nextInt(300) + ((GameActivity)context).enemySpeed, ((GameActivity)context).width, ((GameActivity)context).height);
                 enemies.add(enemy);
                 gameObjects.add(enemy);
                 count = 0;
@@ -152,6 +146,12 @@ public class GameView extends SurfaceView implements Runnable, View.OnTouchListe
     }
 
     public void collision() {
+
+        for(int k = 0; k < bullets.size(); k++) {
+            if(bullets.get(k).position.y <= 0) {
+                bullets.remove(k);
+            }
+        }
 
         for(int j = 0; j < enemies.size(); j++) {
             BeeEnemy tempEnemy = enemies.get(j);
@@ -212,7 +212,7 @@ public class GameView extends SurfaceView implements Runnable, View.OnTouchListe
                 long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
                 if(clickDuration < MAX_CLICK_DURATION && bullets.size() < ((GameActivity)context).numBullets) {
                     //click event has occurred
-                    bullet = new Bullet(context, "bullet", ship.position.x + 250, ship.position.y);
+                    bullet = new Bullet(context, "bullet", ship.position.x + ship.width/2, ship.position.y);
                     bullets.add(bullet);
                     gameObjects.add(bullet);
                 }
@@ -220,7 +220,7 @@ public class GameView extends SurfaceView implements Runnable, View.OnTouchListe
                 int shipx1 = (int)ship.position.x + ship.width;
                 int shipx2 = (int)ship.position.x;
                 if(event.getX() <= shipx1 && event.getX() >= shipx2) {
-                    ship.position.x = event.getX() - 250;
+                    ship.position.x = event.getX() - ship.width/2;
                 }
             default:
                 break;
